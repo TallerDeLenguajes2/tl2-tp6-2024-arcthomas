@@ -1,0 +1,28 @@
+@using espacioP
+@model List<Presupuestos>
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>AAAAAAAAAAAAAAAAAAAA</h1>
+    <div class="list-group">
+        @foreach (var elemento in Model)
+        {
+            <li class="list-group-item">
+                <p>ID: @elemento.IdPresupuesto</p>
+                <p>Nombre: @elemento.NombreDestinatario</p>
+                <p>Fecha de creación: @elemento.FechaCreacion.ToString("yyyy-MM-dd")</p>
+            </li>
+        }
+    </div>
+</body>
+
+</html>
