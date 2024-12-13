@@ -1,0 +1,69 @@
+@using espacioP
+@model List<Presupuestos>
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+            function cargarProducto(id, nombre, fecha) {
+                document.getElementById('elementoIdPresupuesto').value = id;
+                document.getElementById('elementoNombreDestinatario').value = nombre;
+                document.getElementById('elementoFechaCreacion').value = fecha;
+            }
+    </script>
+</head>
+
+<body>
+    <h1>test</h1>
+    <div class="list-group">
+        <div class="modal fade" id="modalModificar" tabindex="-1" aria-labelledby="modalModificarLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalModificarLabel">Modificar Presupuesto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="/Presupuestos/ModificarOk">
+                        <div class="modal-body">
+                            <input type="hidden" id="elementoIdPresupuesto" name="IdPresupuesto" />
+                            <div class="mb-3">
+                                <label for="elementoNombreDestinatario" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="elementoNombreDestinatario" name="NombreDestinatario"
+                                    required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="elementoFechaCreacion" class="form-label">Fecha de Creación</label>
+                                <input type="date" class="form-control" id="elementoFechaCreacion" name="FechaCreacion"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @foreach (var elemento in Model)
+        {
+            <li class="list-group-item">
+                <p>ID: @elemento.IdPresupuesto</p>
+                <p>Nombre: @elemento.NombreDestinatario</p>
+                <p>Fecha de creación: @elemento.FechaCreacion.ToString("yyyy-MM-dd")</p>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalModificar"
+                    onclick="cargarProducto(@elemento.IdPresupuesto, '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(elemento.NombreDestinatario))', '@elemento.FechaCreacion.ToString("yyyy-MM-dd")')">
+                    Modificar
+                </button>
+            </li>
+        }
+    </div>
+</body>
+
+</html>
