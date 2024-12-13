@@ -1,0 +1,68 @@
+@using espacioClientes
+@using PresViewModel
+@model PresupuestoViewModel
+
+<h2>Crear Presupuesto</h2>
+
+<form asp-action="CrearOk" method="post" class="needs-validation" novalidate>
+    <!-- Sección para seleccionar el cliente asociado al presupuesto -->
+    <div class="mb-3">
+        <label asp-for="ClienteId" class="form-label">Cliente</label>
+        <!-- Dropdown dinámico que se llena con los datos del modelo pasado a la vista -->
+        <select asp-for="ClienteId" class="form-select" id="ClienteId" required>
+            <option value="" selected disabled>Seleccione un cliente</option>
+            @foreach (var cliente in Model.Clientes)
+            {
+                <option value="@cliente.Id">@cliente.Nombre</option>
+            }
+        </select>
+        <div class="invalid-feedback">
+            Por favor, seleccioná un cliente.
+        </div>
+    </div>
+
+    <!-- Campo para ingresar la fecha de creación del presupuesto -->
+    <div class="mb-3">
+        <label asp-for="FechaCreacion" class="form-label">Fecha de Creación</label>
+        <input asp-for="FechaCreacion" class="form-control" type="date" required />
+        <div class="invalid-feedback">
+            Por favor, ingresá una fecha válida.
+        </div>
+    </div>
+
+    <!-- Sección para agregar los detalles del presupuesto -->
+    <div id="detalle-section" class="mb-3">
+        <h4>Detalles del Presupuesto</h4>
+        <button type="button" class="btn btn-primary mb-2" id="add-detail">Añadir Detalle</button>
+        <div class="details-container"></div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Crear Presupuesto</button>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addDetailButton = document.getElementById('add-detail');
+            const detailsContainer = document.querySelector('.details-container');
+
+            addDetailButton.addEventListener('click', function () {
+                const detailGroup = document.createElement('div');
+                detailGroup.classList.add('mb-3', 'detail-group');
+
+                detailGroup.innerHTML = `
+                    <label class="form-label">Detalle</label>
+                    <input name="Detalle[]" class="form-control mb-2" placeholder="Descripción del detalle" required />
+                    <button type="button" class="btn btn-danger remove-detail">Eliminar</button>
+                `;
+
+                detailsContainer.appendChild(detailGroup);
+
+                // Añadir funcionalidad de eliminar
+                detailGroup.querySelector('.remove-detail').addEventListener('click', function () {
+                    detailGroup.remove();
+                });
+            });
+        });
+    </script>
+}

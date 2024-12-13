@@ -55,10 +55,10 @@
         {
             <li class="list-group-item">
                 <p>ID: @elemento.IdPresupuesto</p>
-                <p>Nombre: @elemento.NombreDestinatario</p>
+                <p>Nombre: @elemento.ClienteId</p>
                 <p>Fecha de creación: @elemento.FechaCreacion.ToString("yyyy-MM-dd")</p>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalModificar"
-                    onclick="cargarProducto(@elemento.IdPresupuesto, '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(elemento.NombreDestinatario))', '@elemento.FechaCreacion.ToString("yyyy-MM-dd")')">
+                    onclick="cargarProducto(@elemento.IdPresupuesto, @elemento.ClienteId, '@elemento.FechaCreacion.ToString("yyyy-MM-dd")')">
                     Modificar
                 </button>
             </li>
