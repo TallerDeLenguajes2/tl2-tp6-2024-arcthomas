@@ -1,5 +1,5 @@
-@using espacioP
-@model List<Presupuestos>
+@using espacioProductos
+@model List<Productos>
 
 
 <!DOCTYPE html>
@@ -8,18 +8,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Listado</title>
 </head>
 
 <body>
-    <h1>Listar de presupuestos</h1>
+    <h1>Lista de productos</h1>
     <div class="list-group">
         @foreach (var elemento in Model)
         {
             <li class="list-group-item">
-                <p>ID: @elemento.IdPresupuesto</p>
-                <p>Nombre: @elemento.ClienteId</p>
-                <p>Fecha de creación: @elemento.FechaCreacion.ToString("yyyy-MM-dd")</p>
+                <p>ID: @elemento.IdProducto</p>
+                <p>Descripcion: @elemento.Descripcion</p>
+                <p>Precio: @elemento.Precio</p>
             </li>
         }
     </div>

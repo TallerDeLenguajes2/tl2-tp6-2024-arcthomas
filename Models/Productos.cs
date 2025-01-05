@@ -1,8 +1,4 @@
-/* Productos
-○ int idProducto
-○ string descripcion
-○ int precio
-*/
+using System.ComponentModel.DataAnnotations;
 namespace espacioProductos;
 public class Productos
 {
@@ -10,6 +6,9 @@ public class Productos
     private string descripcion;
     private int precio;
     public int IdProducto { get => idProducto; set => idProducto = value; }
+    [MaxLength(250)]
     public string Descripcion { get => descripcion; set => descripcion = value; }
+    [Required]
+    [Range(0, 1000000)]
     public int Precio { get => precio; set => precio = value; }
 }

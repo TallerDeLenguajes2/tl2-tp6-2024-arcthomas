@@ -28,7 +28,7 @@ public class PresupuestosController : Controller
     public IActionResult Crear()
     {
         ClientesRepository repo = new ClientesRepository();
-        var clientes = repo.GetAll(); // Obtén la lista de clientes
+        var clientes = repo.GetAll(); 
         var model = new PresupuestoViewModel()
         {
             FechaCreacion = DateTime.Now,

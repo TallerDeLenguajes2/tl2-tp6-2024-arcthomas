@@ -8,7 +8,6 @@ using espacioInterfaz;
 
 public class ProductosRepository : IProductosRepository
 {
-    // Listar presupuestos
     public List<Productos> GetAll()
     {
         string CadenaDeConexion = "Data Source=db/Tienda.db";
@@ -22,27 +21,26 @@ public class ProductosRepository : IProductosRepository
             {
                 while (reader.Read())
                 {
-                    Productos presupuesto = new Productos();
-                    presupuesto.IdProducto = Convert.ToInt32(reader["idProducto"]);
-                    presupuesto.Descripcion = reader["Descripcion"].ToString();
-                    presupuesto.Precio = Convert.ToInt32(reader["Precio"]);
-                    listaProductos.Add(presupuesto);
+                    Productos producto = new Productos();
+                    producto.IdProducto = Convert.ToInt32(reader["idProducto"]);
+                    producto.Descripcion = reader["Descripcion"].ToString();
+                    producto.Precio = Convert.ToInt32(reader["Precio"]);
+                    listaProductos.Add(producto);
                 }
             }
             connection.Close();
         }
         return listaProductos;
     }
-    //Crear Productos 
     public void Create(Productos prod)
     {
         string CadenaDeConexion = "Data Source=db/Tienda.db";
         using (SqliteConnection connection = new SqliteConnection(CadenaDeConexion))
         {
-            string queryString = "INSERT INTO Productos (Descripcion, Precio) VALUES (@nombreDest, @fecha);";
+            string queryString = "INSERT INTO Productos (Descripcion, Precio) VALUES (@desc, @precio);";
             var command = new SqliteCommand(queryString, connection);
-            command.Parameters.AddWithValue("@nombreDest", prod.Descripcion);
-            command.Parameters.AddWithValue("@fecha", prod.Precio);
+            command.Parameters.AddWithValue("@desc", prod.Descripcion);
+            command.Parameters.AddWithValue("@precio", prod.Precio);
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
@@ -53,11 +51,11 @@ public class ProductosRepository : IProductosRepository
         string CadenaDeConexion = "Data Source=db/Tienda.db";
         using (SqliteConnection connection = new SqliteConnection(CadenaDeConexion))
         {
-            string queryString = "UPDATE Productos SET Descripcion = @nombreDest, Precio = @fecha WHERE idProducto = @id;";
+            string queryString = "UPDATE Productos SET Descripcion = @desc, Precio = @precio WHERE idProducto = @id;";
             var command = new SqliteCommand(queryString, connection);
-            command.Parameters.AddWithValue("@nombreDest", prod.Descripcion);
+            command.Parameters.AddWithValue("@desc", prod.Descripcion);
             command.Parameters.AddWithValue("@id", prod.IdProducto);
-            command.Parameters.AddWithValue("@fecha", prod.Precio);
+            command.Parameters.AddWithValue("@precio", prod.Precio);
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
@@ -68,7 +66,7 @@ public class ProductosRepository : IProductosRepository
         string CadenaDeConexion = "Data Source=db/Tienda.db";
         using (SqliteConnection connection = new SqliteConnection(CadenaDeConexion))
         {
-            string queryString = "SELECT Descripcion FROM Productos WHERE idProducto = @id;";
+            string queryString = "SELECT Descripcion, Precio FROM Productos WHERE idProducto = @id;";
             var command = new SqliteCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
             connection.Open();
@@ -76,15 +74,20 @@ public class ProductosRepository : IProductosRepository
             {
                 if (reader.Read())
                 {
-                    Productos presupuesto = new Productos();
-                    presupuesto.Descripcion = reader[0].ToString();
-                    Console.WriteLine(reader[0]);
-                    return presupuesto;
+                    Productos Producto = new Productos();
+                    Producto.Descripcion = reader["Descripcion"].ToString();
+                    Producto.IdProducto = id;
+                    Producto.Precio = Convert.ToInt32(reader["Precio"]);
+                    connection.Close();
+                    return Producto;
+                }
+                else
+                {
+                    connection.Close();
+                    return null;
                 }
             }
-            connection.Close();
         }
-        return null;
     }
     public void Delete(int id)
     {

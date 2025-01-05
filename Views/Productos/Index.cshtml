@@ -12,12 +12,51 @@
             border: 0;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Selecciona todos los toasts visibles
+            const toasts = document.querySelectorAll(".toast");
+
+            toasts.forEach(toast => {
+                // Configura un temporizador para ocultar cada toast
+                setTimeout(() => {
+                    toast.style.opacity = "0"; // Anima la opacidad
+                    setTimeout(() => toast.remove(), 500); // Elimina el elemento tras la animación
+                }, 4000); // Cambia 4000 por la duración de la animación en milisegundos
+            });
+        });
+    </script>
 </head>
 
 <body>
+    @{
+        var errors = TempData["Errors"] as List<string>;
+        var successMessage = TempData["SuccessMessage"] as string;
+    }
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="toast show success" role="alert" aria-live="assertive" aria-atomic="true">
+            @successMessage
+        </div>
+    }
+
+    @if (errors != null && errors.Any())
+    {
+        <div class="toast-container">
+            @foreach (var error in errors)
+            {
+                <div class="toast show error" role="alert" aria-live="assertive" aria-atomic="true">
+                    @error
+                </div>
+            }
+        </div>
+    } </div>
+    }
     <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
         <div class="list-group">
-            <a href="Presupuestos/Listar" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+            <a href="@Url.Action("Listar", "Productos")" class="list-group-item list-group-item-action d-flex gap-3 py-3"
+                aria-current="true">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     width="52" height="52" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512"
                     xml:space="preserve" class="">
@@ -35,19 +74,52 @@
                 </svg>
                 <div class="d-flex w-100" style="flex-direction: column; justify-content: center;">
                     <h6 class=" mb-0">Listar</h6>
-                    <p class="mb-0 opacity-75">Listar los presupuestos.</p>
+                    <p class="mb-0 opacity-75">Listar los productos.</p>
                 </div>
             </a>
-            <a href="Presupuestos/Crear" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="52" height="52" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><circle r="16" cx="16" cy="16" fill="#dd8bf3" shape="circle"></circle>
-                <g transform="matrix(0.7,0,0,0.7,4.800000000000001,4.799756777286534)"><path d="M23 5h-2.278a2.026 2.026 0 0 0-1.893-1 3 3 0 0 0-5.658 0 2.026 2.026 0 0 0-1.893 1H9a3.003 3.003 0 0 0-3 3v19a3.003 3.003 0 0 0 3 3h14a3.003 3.003 0 0 0 3-3V8a3.003 3.003 0 0 0-3-3zM13 6h1a1 1 0 0 0 1-1 1 1 0 0 1 2 0 1 1 0 0 0 1 1h1v1h-6zm11 21a1.001 1.001 0 0 1-1 1H9a1.001 1.001 0 0 1-1-1V8a1.001 1.001 0 0 1 1-1h2a2.002 2.002 0 0 0 2 2h6a2.002 2.002 0 0 0 2-2h2a1.001 1.001 0 0 1 1 1zm-8-16a7 7 0 1 0 7 7 7.008 7.008 0 0 0-7-7zm0 12a5 5 0 1 1 5-5 5.006 5.006 0 0 1-5 5zm3-6a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2h-2a1 1 0 0 1 0-2h2v-2a1 1 0 0 1 2 0v2z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g>
-                    </svg>
+            <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true"
+                data-bs-toggle="modal" data-bs-target="#crearModal">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="52" height="52" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512"
+                    xml:space="preserve" class="">
+                    <circle r="16" cx="16" cy="16" fill="#dd8bf3" shape="circle"></circle>
+                    <g transform="matrix(0.7,0,0,0.7,4.800000000000001,4.799756777286534)">
+                        <path
+                            d="M23 5h-2.278a2.026 2.026 0 0 0-1.893-1 3 3 0 0 0-5.658 0 2.026 2.026 0 0 0-1.893 1H9a3.003 3.003 0 0 0-3 3v19a3.003 3.003 0 0 0 3 3h14a3.003 3.003 0 0 0 3-3V8a3.003 3.003 0 0 0-3-3zM13 6h1a1 1 0 0 0 1-1 1 1 0 0 1 2 0 1 1 0 0 0 1 1h1v1h-6zm11 21a1.001 1.001 0 0 1-1 1H9a1.001 1.001 0 0 1-1-1V8a1.001 1.001 0 0 1 1-1h2a2.002 2.002 0 0 0 2 2h6a2.002 2.002 0 0 0 2-2h2a1.001 1.001 0 0 1 1 1zm-8-16a7 7 0 1 0 7 7 7.008 7.008 0 0 0-7-7zm0 12a5 5 0 1 1 5-5 5.006 5.006 0 0 1-5 5zm3-6a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2h-2a1 1 0 0 1 0-2h2v-2a1 1 0 0 1 2 0v2z"
+                            fill="#000000" opacity="1" data-original="#000000" class=""></path>
+                    </g>
+                </svg>
                 <div class="d-flex w-100" style="flex-direction: column; justify-content: center;">
                     <h6 class=" mb-0">Crear</h6>
-                    <p class="mb-0 opacity-75">Crear un nuevo presupuesto.</p>
+                    <p class="mb-0 opacity-75">Crear un nuevo producto.</p>
                 </div>
             </a>
-            <a href="Presupuestos/Modificar" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+            <!-- Modal -->
+            <div class="modal fade" id="crearModal" tabindex="-1" aria-labelledby="crearModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="crearModalLabel">Crear Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="Crear" method="post">
+                                <div class="mb-3">
+                                    <label for="desc" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" id="desc" name="Descripcion">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="precio" class="form-label">Precio</label>
+                                    <input type="number" class="form-control" id="precio" name="Precio" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Crear</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Modificar", "Productos")" class="list-group-item list-group-item-action d-flex gap-3 py-3"
+                aria-current="true">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     width="52" height="52" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512"
                     xml:space="preserve" class="">
@@ -72,10 +144,11 @@
                 </svg>
                 <div class="d-flex w-100" style="flex-direction: column; justify-content: center;">
                     <h6 class=" mb-0">Modificar</h6>
-                    <p class="mb-0 opacity-75">Modificar un presupuesto del listado.</p>
+                    <p class="mb-0 opacity-75">Modificar un producto del listado.</p>
                 </div>
             </a>
-            <a href="Presupuestos/Eliminar" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+            <a href="@Url.Action("Eliminar", "Productos")" class="list-group-item list-group-item-action d-flex gap-3 py-3"
+                aria-current="true">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     width="52" height="52" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512"
                     xml:space="preserve" class="">
@@ -94,7 +167,7 @@
                 </svg>
                 <div class="d-flex w-100" style="flex-direction: column; justify-content: center;">
                     <h6 class=" mb-0">Eliminar</h6>
-                    <p class="mb-0 opacity-75">Eliminar un presupuesto del listado.</p>
+                    <p class="mb-0 opacity-75">Eliminar un producto del listado.</p>
                 </div>
             </a>
         </div>

@@ -1,0 +1,66 @@
+@using espacioProductos
+@model List<Productos>
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function cargarProducto(id, descripcion, precio) {
+            document.getElementById('productoId').value = id;
+            document.getElementById('productoDescripcion').value = descripcion;
+            document.getElementById('productoPrecio').value = precio;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>test</h1>
+    <div class="list-group">
+        <div class="modal fade" id="modalModificar" tabindex="-1" aria-labelledby="modalModificarLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalModificarLabel">Modificar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="/Productos/ModificarOk">
+                        <div class="modal-body">
+                            <input type="hidden" id="productoId" name="IdProducto" />
+                            <div class="mb-3">
+                                <label for="productoDescripcion" class="form-label">Descripción</label>
+                                <input type="text" class="form-control" id="productoDescripcion" name="Descripcion" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="productoPrecio" class="form-label">Precio</label>
+                                <input type="text" class="form-control" id="productoPrecio" name="Precio" required />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @foreach (var elemento in Model)
+        {
+            <li class="list-group-item">
+                <p>ID: @elemento.IdProducto</p>
+                <p>Descripcion: @elemento.Descripcion</p>
+                <p>Precio: @elemento.Precio</p>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalModificar"
+                    onclick="cargarProducto(@elemento.IdProducto, '@elemento.Descripcion', @elemento.Precio)">
+                    Modificar
+                </button>
+            </li>
+        }
+    </div>
+</body>
+
+</html>

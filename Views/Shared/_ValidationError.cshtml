@@ -1,0 +1,16 @@
+@model Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary
+
+@if (!Model.IsValid)
+{
+    <div class="toast-error">
+        <ul>
+            @foreach (var item in Model.Values)
+            {
+                foreach (var error in item.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
